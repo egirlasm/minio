@@ -5,7 +5,7 @@ inputs:
     description: 'the server address'
     required: false
   port: # message to post when using bot token
-    description: 'Message to post into Slack. Needed if using bot token'
+    description: 'port of minio server'
     default: 9000
     required: false
   useSSL: # JSON payload to send to Slack via webhook
