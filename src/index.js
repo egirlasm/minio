@@ -1,10 +1,14 @@
 import * as Minio from 'minio'
+const core = require('@actions/core');
 
+console.log('where is server adress')
+// console.log(process.env)
+console.log(core.getInput('ENDPOINT'))
 // Instantiate the MinIO client with the object store service
 // endpoint and an authorized user's credentials
 // play.min.io is the MinIO public test cluster
 const minioClient = new Minio.Client({
-  endPoint: '172.30.1.1',
+  endPoint: core.getInput('ENDPOINT'),
   port: 9000,
   useSSL: false,
   accessKey: 'DZL3Ee65fB1N7cQiAvdo',
