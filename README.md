@@ -1,2 +1,0 @@
-# minio
-mino for actions
