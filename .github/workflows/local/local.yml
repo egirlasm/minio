@@ -19,7 +19,12 @@ jobs:
       with:
         endpoint: '192.168.219.100'
         port: 9000
-        file: '/test.txt'
+        bucket: 'workshared'
+        use-ssl: false
+        paths: |-
+          README.md
+          package.json
+          src/index.js
       env:
         MINIO_ACCESS_KEY: ${{ secrets.ACCESS_KEY }}
         MINIO_ACCESS_SECRET: ${{ secrets.ACCESS_SECRET }}

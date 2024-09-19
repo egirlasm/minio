@@ -1,21 +1,20 @@
 name: 'minio'
 description: 'Upload object with Minio for actions'
 inputs:
-  endpoint: # channel id to post message when using bot token
+  endpoint: 
     description: 'the server address'
     required: false
-  port: # message to post when using bot token
+  port: 
     description: 'port of minio server'
     default: 9000
     required: false
-  useSSL: # JSON payload to send to Slack via webhook
-    description: 'JSON payload to send to Slack if webhook route. If not supplied, json from GitHub event will be sent instead'
+  use-ssl: 
     required: false
-  accessKey: # custom delimiter used to flatten nested values in the JSON payload
-    description: 'Custom delimiter used to flatten nested values in the JSON payload. If not supplied, defaults to a period (".").'
+  access-key:
     required: true
-  secretKey: # path to JSON payload to send to Slack via webhook
-    description: 'path to JSON payload to send to Slack if webhook route. If not supplied, json from GitHub event will be sent instead. If payload is provided, it will take preference over this field'
+  secret-key: 
+    required: true
+  bucket:
     required: true
 outputs:
   endpoint: # Id of the channel. If channel name was used as input we can get ID from output for later use when updating message or posting to thread.

@@ -1,28 +1,26 @@
 import * as Minio from 'minio'
 const core = require('@actions/core');
+const fs = require('fs');
 
-console.log('where is server adress')
-// console.log(process.env)
-console.log(core.getInput('ENDPOINT'))
-// Instantiate the MinIO client with the object store service
-// endpoint and an authorized user's credentials
-// play.min.io is the MinIO public test cluster
+console.log(process.env)
+var endpoint = core.getInput('ENDPOINT')
+var port = core.getInput('PORT')
+var useSSL = core.getBooleanInput('USE-SSL')
+var accessKey = process.env.MINIO_ACCESS_KEY //core.getInput('ACCESS_KEY')
+var secretKey = process.env.MINIO_ACCESS_SECRET//core.getInput('ACCESS_SECRET')
+var bucket = core.getInput('BUCKET')
+
+console.log('check params ', endpoint, port, useSSL, bucket, accessKey, secretKey)
+
 const minioClient = new Minio.Client({
-  endPoint: core.getInput('ENDPOINT'),
-  port: 9000,
-  useSSL: false,
-  accessKey: 'DZL3Ee65fB1N7cQiAvdo',
-  secretKey: 'ZVtV77Cck144BlgftpQaMN6Rry98z9FuH332jKYK',
+  endPoint: endpoint,
+  port: Number.parseInt(port),
+  useSSL: useSSL,
+  accessKey: accessKey,
+  secretKey: secretKey
 })
 
-// File to upload
-const sourceFile = 'README.md'
 
-// Destination bucket
-const bucket = 'workshared'
-
-// Destination object name
-const destinationObject = 'my-test-file.md'
 
 // Check if the bucket exists
 // If it doesn't, create it
@@ -34,16 +32,35 @@ if (exists) {
   console.log('Bucket ' + bucket + ' created in "us-east-1".')
 }
 
-// Set the object metadata
-var metaData = {
-  'Content-Type': 'text/plain',
-  'X-Amz-Meta-Testing': 1234,
-  example: 5678,
+const paths = core.getMultilineInput('paths')
+
+if (paths.length === 0) {
+  throw ("no paths input")
 }
 
-// Upload the file with fPutObject
-// If an object with the same name exists,
-// it is updated with new data
-await minioClient.fPutObject(bucket, destinationObject, sourceFile, metaData)
-console.log('File ' + sourceFile + ' uploaded as object ' + destinationObject + ' in bucket ' + bucket)
-// Run the File Uploader
+var metaData = {
+  // 'Content-Type': 'text/plain',
+  // 'X-Amz-Meta-Testing': 1234,
+  // example: 5678,
+}
+console.log(paths)
+paths.map(async (path) => {
+
+
+  try{
+    let stat =  fs.lstatSync(path)
+    console.log('check path => ', path,stat.isDirectory)
+    console.log(stat.metaData)
+    if (stat.isDirectory()) {
+      throw ('Unsupported')
+    } else {
+      await minioClient.fPutObject(bucket, path, path, metaData)
+    }
+  }catch(e){
+    console.log(e)
+  }
+
+})
+
+
+
