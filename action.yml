@@ -9,6 +9,7 @@ inputs:
     default: 9000
     required: false
   use-ssl: 
+    default: false
     required: false
   access-key:
     required: true
@@ -17,8 +18,8 @@ inputs:
   bucket:
     required: true
 outputs:
-  endpoint: # Id of the channel. If channel name was used as input we can get ID from output for later use when updating message or posting to thread.
-    description: 'the server address'
+  url: # the file url if upload successed 
+    description: 'share url'
 runs:
   using: 'node20'
   main: 'dist/index.js'

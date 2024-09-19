@@ -20,7 +20,7 @@ jobs:
         endpoint: '192.168.219.100'
         port: 9000
         bucket: 'workshared'
-        use-ssl: false
+        # use-ssl: false
         paths: |-
           README.md
           package.json
